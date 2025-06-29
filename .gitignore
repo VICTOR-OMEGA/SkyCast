@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Environment
+.env
+venv/
+.env.*
+
+# Logs and debug
+*.log
+*.sqlite3
+*.db
+instance/
+*.pid
+
+# IDEs and tools
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# OS
+Thumbs.db
+
+# Flask
+*.egg-info/
+*.bak
+*.tmp
+
+# Deployment
+*.pyc
+wsgi.pyc
+

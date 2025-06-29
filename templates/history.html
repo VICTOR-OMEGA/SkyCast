@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SkyCast - Full History</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 2rem;
+            background: #f4f9ff;
+            color: #222;
+        }
+        h1 {
+            text-align: center;
+            color: #24567f;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        th {
+            background-color: #327ab7;
+            color: #fff;
+            padding: 0.75rem;
+        }
+        td {
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        tr:hover {
+            background-color: #f1f9ff;
+        }
+        a {
+            text-decoration: none;
+            color: #24567f;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">← Back to Dashboard</a>
+    <h1>Full Weather History</h1>
+    <table>
+        <tr>
+            <th>Timestamp</th>
+            <th>Temp (°C)</th>
+            <th>Humidity (%)</th>
+            <th>Wind (m/s)</th>
+            <th>Description</th>
+        </tr>
+        {% for item in history %}
+        <tr>
+            <td>{{ item.timestamp }}</td>
+            <td>{{ item.temperature }}</td>
+            <td>{{ item.humidity }}</td>
+            <td>{{ item.wind_speed }}</td>
+            <td>{{ item.description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+

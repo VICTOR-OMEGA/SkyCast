@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SkyCast - Weather Trends</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f9ff;
+            padding: 2rem;
+            color: #222;
+        }
+        h1 {
+            text-align: center;
+            color: #24567f;
+        }
+        .controls {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        select {
+            padding: 0.5rem;
+            font-size: 1rem;
+            margin: 0 0.5rem;
+        }
+        canvas {
+            display: block;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: #24567f;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>SkyCast Weather Trends</h1>
+
+    <div class="controls">
+        <label for="chartType">Chart Type:</label>
+        <select id="chartType" onchange="renderChart()">
+            <option value="line">Line</option>
+            <option value="bar">Bar</option>
+            <option value="pie">Pie</option>
+        </select>
+
+        <label for="metric">Metric:</label>
+        <select id="metric" onchange="renderChart()">
+            <option value="temperature">Temperature</option>
+            <option value="humidity">Humidity</option>
+            <option value="wind_speed">Wind Speed</option>
+            <option value="rain_count">Rain Count</option>
+        </select>
+    </div>
+
+    <canvas id="weatherChart" height="100"></canvas>
+
+    <a href="/">← Back to Dashboard</a>
+
+    <script>
+        const chartData = {{ summary | tojson }};
+        let chartInstance = null;
+
+        function renderChart() {
+            const ctx = document.getElementById('weatherChart').getContext('2d');
+            const type = document.getElementById('chartType').value;
+            const metric = document.getElementById('metric').value;
+
+            const labels = chartData.map(d => d.date);
+            const data = chartData.map(d => d[metric]);
+            const colors = [
+                '#4e79a7', '#f28e2b', '#e15759', '#76b7b2', '#59a14f',
+                '#edc948', '#b07aa1', '#ff9da7', '#9c755f', '#bab0ab'
+            ];
+
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: metric.replace('_', ' ').toUpperCase(),
+                        data: data,
+                        backgroundColor: type === 'pie' ? colors : 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: type !== 'bar' && type !== 'pie'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: type !== 'pie' ? {
+                        y: { beginAtZero: true }
+                    } : {}
+                }
+            });
+        }
+
+        renderChart();
+    </script>
+</body>
+</html>
+

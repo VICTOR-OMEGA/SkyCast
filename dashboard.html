@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SkyCast Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f9ff;
+            padding: 2rem;
+            color: #222;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #24567f;
+        }
+        .card {
+            background: #ffffff;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .card li {
+            margin: 0.5rem 0;
+        }
+        form {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        select {
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        th {
+            background-color: #327ab7;
+            color: #fff;
+            padding: 0.75rem;
+        }
+        td {
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        tr:hover {
+            background-color: #f1f9ff;
+        }
+        .links {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .links a {
+            margin: 0 1rem;
+            color: #24567f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>SkyCast Weather</h1>
+
+    <form method="get" action="/">
+        <label for="city">Choose a city: </label>
+        <select name="city" id="city" onchange="this.form.submit()">
+            <option value="Abuja" {% if city == "Abuja" %}selected{% endif %}>Abuja</option>
+            <option value="Lagos" {% if city == "Lagos" %}selected{% endif %}>Lagos</option>
+            <option value="Port Harcourt" {% if city == "Port Harcourt" %}selected{% endif %}>Port Harcourt</option>
+            <option value="Enugu" {% if city == "Enugu" %}selected{% endif %}>Enugu</option>
+            <option value="Kano" {% if city == "Kano" %}selected{% endif %}>Kano</option>
+            <option value="Ibadan" {% if city == "Ibadan" %}selected{% endif %}>Ibadan</option>
+            <option value="Benin City" {% if city == "Benin City" %}selected{% endif %}>Benin City</option>
+            <option value="Jos" {% if city == "Jos" %}selected{% endif %}>Jos</option>
+            <option value="Ilorin" {% if city == "Ilorin" %}selected{% endif %}>Ilorin</option>
+            <option value="Abeokuta" {% if city == "Abeokuta" %}selected{% endif %}>Abeokuta</option>
+        </select>
+    </form>
+
+    {% if data.error %}
+        <div class="card">
+            <p>Error: {{ data.error }}</p>
+        </div>
+    {% else %}
+        <div class="card">
+            <ul>
+                <li><strong>Temperature:</strong> {{ data.temperature }}°C</li>
+                <li><strong>Humidity:</strong> {{ data.humidity }}%</li>
+                <li><strong>Wind Speed:</strong> {{ data.wind_speed }} m/s</li>
+                <li><strong>Description:</strong> {{ data.description }}</li>
+            </ul>
+        </div>
+    {% endif %}
+
+    <div class="links">
+        <a href="/history">📊 Full History</a>
+        <a href="/trends">📈 Weather Trends</a>
+        <a href="/export">📥 Download CSV</a>
+    </div>
+
+    <h2 onclick="toggleHistory()" style="cursor:pointer;">Recent Weather History ▼</h2>
+    <div id="history" style="display:none;">
+        <table>
+            <tr>
+                <th>Timestamp</th>
+                <th>Temp (°C)</th>
+                <th>Humidity (%)</th>
+                <th>Wind (m/s)</th>
+                <th>Description</th>
+            </tr>
+            {% for item in history %}
+            <tr>
+                <td>{{ item.timestamp }}</td>
+                <td>{{ item.temperature }}</td>
+                <td>{{ item.humidity }}</td>
+                <td>{{ item.wind_speed }}</td>
+                <td>{{ item.description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <script>
+        function toggleHistory() {
+            const div = document.getElementById("history");
+            div.style.display = div.style.display === "none" ? "block" : "none";
+        }
+    </script>
+</body>
+</html>
+
